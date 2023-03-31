@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import datetime as dt
+from decimal import Decimal
 
 
 @dataclass
@@ -18,6 +19,7 @@ class Match:
     events: list["Event"] = None
     home_events: list["Event"] = None
     away_events: list["Event"] = None
+    referee: str = ""
 
     def __repr__(self) -> str:
         return f"""
@@ -34,3 +36,18 @@ class Event:
 class Goal(Event):
     scorer: str
     assist: str = ""
+
+
+@dataclass
+class MatchStats:
+    possession: Decimal
+    shots_on_target: int
+    shots: int
+    touches: int
+    passes: int
+    tackles: int
+    clearances: int
+    corners: int
+    offsides: int
+    yellow_cards: int
+    fouls_conceded: int
