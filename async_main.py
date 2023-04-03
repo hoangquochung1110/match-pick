@@ -8,6 +8,7 @@ import aiohttp
 import asyncio
 from helper import calculate_execution_time
 from constants import match_ids
+import httpx
 
 
 match_url = "https://www.premierleague.com/match/"
@@ -15,10 +16,9 @@ match_url = "https://www.premierleague.com/match/"
 
 async def get_match(match_id):
     """Async Extract match data from EPL page."""
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f"{match_url}{match_id}") as response:
-            res = await response.text()
-            doc = html.fromstring(res)
+    async with httpx.AsyncClient() as client:
+            res = await client.get(f"{match_url}{match_id}")
+            doc = html.fromstring(res.content)
             match_page = MatchDetailPage(doc=doc)
             match: Match = match_page.extract()
             return match
