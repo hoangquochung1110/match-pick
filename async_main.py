@@ -32,3 +32,4 @@ async def get_matches(match_ids):
 if __name__ == "__main__":
     with calculate_execution_time():
         matches = asyncio.run(get_matches(match_ids=match_ids))
+        import ipdb; ipdb.set_trace()

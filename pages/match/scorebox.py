@@ -1,7 +1,7 @@
 from typing import Literal
 from functools import partialmethod
 from lxml import html
-from extract import condense_spaces, parse_goal_event_string
+from extract import GoalEvent, condense_spaces, parse_goal_event_string
 from page_object import Club, Match, Goal
 
 class Component:
@@ -9,7 +9,7 @@ class Component:
         self.doc = doc
         self.component: html.HtmlElement = doc.find_class(path)[0]
 
-class ScoreboxComponent(Component):
+class Scorebox(Component):
     """Represent component with `scoreboxContainer` classs."""
 
     def extract(self) -> Match:
@@ -51,7 +51,7 @@ class ScoreboxComponent(Component):
         
         kind of events.
         """
-        events = []
+        match_events = []
         match_events_container = self.component.find_class(
             "matchEvents matchEventsContainer",
         )[0]
@@ -59,16 +59,14 @@ class ScoreboxComponent(Component):
         for event in side_event_container.find_class("event"):
             formatted_text = condense_spaces(event.text_content()).strip()
             try:
-                player, minutes = parse_goal_event_string(formatted_text)
+                events: GoalEvent = parse_goal_event_string(formatted_text)
             except ValueError as exc:
                 print(exc)
             else:
-                for minute in minutes:
-                    goal = Goal(
-                        match=self.match_id, minute=minute, scorer=player[0]
-                    )
-                    events.append(goal)
-        return events
+                for event in events:
+                    goal = Goal(match=self.match_id,minute=event.minute,scorer=event.player,label=event.label)
+                    match_events.append(goal)
+        return match_events
 
     get_events_home = partialmethod(get_events, "home")
     get_events_away = partialmethod(get_events, "away")

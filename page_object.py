@@ -35,6 +35,7 @@ class Event:
 @dataclass
 class Goal(Event):
     scorer: str
+    label: str
     assist: str = ""
 
 

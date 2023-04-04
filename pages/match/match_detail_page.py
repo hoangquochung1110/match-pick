@@ -1,5 +1,5 @@
 from lxml import html
-from .scorebox_component import ScoreboxComponent
+from .scorebox import Scorebox
 
 
 class Page:
@@ -12,7 +12,7 @@ class MatchDetailPage(Page):
 
     @property
     def scorebox(self):
-        return ScoreboxComponent(doc=self.doc, path="scoreboxContainer")
+        return Scorebox(doc=self.doc, path="scoreboxContainer")
 
     def extract(self):
         return self.scorebox.extract()

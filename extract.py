@@ -1,4 +1,7 @@
 import re
+from collections import namedtuple
+
+GoalEvent = namedtuple("GoalEvent", "player minute label")
 
 
 def condense_spaces(s: str, separator=" "):
@@ -24,28 +27,41 @@ def parse_goal_event_string(text: str) -> tuple[str, list[str]]:
         "Matheus Nunes 90 +10' Red Card"
         "Bukayo Saka 43', 74' Goal"
         "Phil Foden 8', 44', 73' Goal"
+        "Gabriel Jesus 35' (pen), 55' label.penalty.scored"
 
     """
-    def help_transform(text: str):
+    def strip_whitespace_and_single_quote(text: str):
         mapping = {
-            " ": "",
             "'": "",
         }
         trans_table = str.maketrans(mapping)
-        return text.translate(trans_table)
+        return text.translate(trans_table).strip()
 
+    goal_events = []
+
+    cleaned_text = text.replace("label.penalty.scored", "Goal")
     player_pattern = r"^[A-Za-z\s-]+"
-    minute_pattern = r"\b[\d\s\+]+'"
-    label_pattern = r"Goal|\(pen\)"
-    is_goal = re.search(label_pattern, text)
+    # minute_pattern = r"\b[\d\s\+]+'"
+    minute_pattern = r"[\d\s+]*'\s*(?:\(pen\))?|\d+'"
+
+    label_pattern = r"Goal"
+    is_goal = re.search(label_pattern, cleaned_text)
     if not is_goal:
-        raise ValueError("Not goal: ",text)
-    
-    minutes = re.findall(minute_pattern, text)
+        raise ValueError("Not goal: ",cleaned_text)
+
+    player = re.match(player_pattern, cleaned_text)
+
+    minutes = re.findall(minute_pattern, cleaned_text)
+
     for idx in range(len(minutes)):
-        minutes[idx] = help_transform(minutes[idx])
-    player = re.match(player_pattern, text)
-    return player, minutes
+        minutes[idx] = strip_whitespace_and_single_quote(minutes[idx])
+        try:
+            minute, label = minutes[idx].split(" ")
+        except ValueError:
+            minute, label = minutes[idx], ""
+        finally:
+            goal_events.append(GoalEvent(player[0], minute, label))
+    return goal_events
 
 
 if __name__ == "__main__":
