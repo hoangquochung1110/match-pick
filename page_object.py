@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import datetime as dt
 from decimal import Decimal
+from lxml import html
 
 
 @dataclass
@@ -11,15 +12,16 @@ class Club:
 @dataclass
 class Match:
     ext_id: str|int
-    kickoff: dt = ""
-    home: Club = None
-    away: Club = None
-    score: str = ""
-    url: str = ""
+    kickoff: dt
+    home: Club
+    away: Club
+    score: str
+    half_time_score: str
     events: list["Event"] = None
     home_events: list["Event"] = None
     away_events: list["Event"] = None
     referee: str = ""
+    url: str = ""
 
     def __repr__(self) -> str:
         return f"""
@@ -40,6 +42,11 @@ class Goal(Event):
 
 
 @dataclass
+class Assist(Event):
+    player: str
+
+
+@dataclass
 class MatchStats:
     possession: Decimal
     shots_on_target: int
@@ -52,3 +59,9 @@ class MatchStats:
     offsides: int
     yellow_cards: int
     fouls_conceded: int
+
+
+class Component:
+    def __init__(self, doc, path) -> None:
+        self.doc = doc
+        self.component: html.HtmlElement = doc.find_class(path)[0]

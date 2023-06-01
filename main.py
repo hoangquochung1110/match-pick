@@ -14,10 +14,11 @@ from helper import calculate_execution_time
 def get_matches(match_ids):
     matches = []
     for match_id in match_ids:
+        url = f"{match_url}{match_id}"
         # Make the request to the URL
-        response = requests.get(f"{match_url}{match_id}")
+        response = requests.get(url)
         doc = html.fromstring(response.content)
-        match_page = MatchDetailPage(doc=doc)
+        match_page = MatchDetailPage(doc=doc, url=url)
         match: Match = match_page.extract()
         matches.append(match)
     return matches

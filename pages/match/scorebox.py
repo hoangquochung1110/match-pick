@@ -1,13 +1,8 @@
 from typing import Literal
 from functools import partialmethod
-from lxml import html
-from extract import GoalEvent, condense_spaces, parse_goal_event_string
-from page_object import Club, Match, Goal
+from extract import GoalEvent, condense_spaces, parse_assist_event_string, parse_goal_event_string
+from page_object import Assist, Club, Match, Goal, Component
 
-class Component:
-    def __init__(self, doc, path) -> None:
-        self.doc = doc
-        self.component: html.HtmlElement = doc.find_class(path)[0]
 
 class Scorebox(Component):
     """Represent component with `scoreboxContainer` classs."""
@@ -15,8 +10,8 @@ class Scorebox(Component):
     def extract(self) -> Match:
         home_team = self.get_team_home()
         away_team = self.get_team_away()
-        home_events = self.get_events_home()
-        away_events = self.get_events_away()
+        home_events = self.get_goals_home()
+        away_events = self.get_goals_away()
         return Match(
             ext_id=self.match_id,
             home=Club(*home_team),
@@ -35,6 +30,10 @@ class Scorebox(Component):
     def get_score(self) -> str:
         score_fulltime_element = self.component.find_class("score fullTime")
         return score_fulltime_element[0].text_content()
+    
+    def get_half_time_score(self):
+        half_time = self.component.find_class("halfTime")[0]
+        return half_time.text_content().strip().split("\n")[1].strip()
 
     def get_team(self, side: Literal["home", "away"]) -> tuple:
         class_selector = f"team {side}"
@@ -46,11 +45,8 @@ class Scorebox(Component):
     get_team_home = partialmethod(get_team, "home")
     get_team_away = partialmethod(get_team, "away")
     
-    def get_events(self, side: Literal["home", "away"]):
-        """Locate the icon (.i.e: ball, yellow card) to determine
-        
-        kind of events.
-        """
+    def get_goals(self, side: Literal["home", "away"]):
+        """Retrieve goal events only (exclude red cards)."""
         match_events = []
         match_events_container = self.component.find_class(
             "matchEvents matchEventsContainer",
@@ -68,5 +64,27 @@ class Scorebox(Component):
                     match_events.append(goal)
         return match_events
 
-    get_events_home = partialmethod(get_events, "home")
-    get_events_away = partialmethod(get_events, "away")
+    get_goals_home = partialmethod(get_goals, "home")
+    get_goals_away = partialmethod(get_goals, "away")
+
+    def get_assists(self, side: Literal["home", "away"]):
+        assist_each_side = []
+        assist_container = self.component.find_class("assists")[0]
+        for assist in assist_container.find_class(f"{side}"):
+            formatted_text = condense_spaces(assist.text_content()).strip()
+            if not formatted_text:
+                return assist_each_side
+            for player_and_minute in formatted_text.split("' "):
+                player, minute = parse_assist_event_string(player_and_minute)
+                assist_each_side.append(
+                    Assist(
+                        match=self.match_id,
+                        minute=minute,
+                        player=player,
+                    )
+                )
+        return assist_each_side
+
+    get_assists_home = partialmethod(get_assists, "home")
+    get_assists_away = partialmethod(get_assists, "away")
+
