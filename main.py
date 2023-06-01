@@ -6,11 +6,7 @@ from pages.match.match_detail_page import MatchDetailPage
 from constants import match_ids
 from helper import calculate_execution_time
 
-# Define the command-line arguments
 
-
-
-    
 def get_matches(match_ids):
     matches = []
     for match_id in match_ids:
