@@ -4,3 +4,5 @@ lxml
 ipdb
 aiohttp
 httpx
+
+icalendar
