@@ -5,4 +5,4 @@ ipdb
 aiohttp
 httpx
 
-icalendar
+ics
