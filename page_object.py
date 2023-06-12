@@ -11,6 +11,7 @@ class Club:
 
 @dataclass
 class Match:
+    url: str
     ext_id: str|int
     kickoff: dt
     home: Club
@@ -21,7 +22,6 @@ class Match:
     home_events: list["Event"] = None
     away_events: list["Event"] = None
     referee: str = ""
-    url: str = ""
 
     def __repr__(self) -> str:
         return f"""

@@ -34,6 +34,7 @@ class MatchDetailPage(Page):
 
         return Match(
             ext_id=self.scorebox.match_id,
+            url=self.url,
             kickoff=self.matchbar.get_kickoff(),
             home=Club(*home_team),
             away=Club(*away_team),
@@ -43,5 +44,4 @@ class MatchDetailPage(Page):
             home_events=home_events,
             away_events=away_events,
             referee=self.matchbar.get_referee(),
-            url="",
         )
