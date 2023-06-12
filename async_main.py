@@ -14,9 +14,11 @@ match_url = "https://www.premierleague.com/match/"
 async def get_match(match_id):
     """Async Extract match data from EPL page."""
     async with httpx.AsyncClient() as client:
-            res = await client.get(f"{match_url}{match_id}")
+            url = f"{match_url}{match_id}"
+            res = await client.get(url)
             doc = html.fromstring(res.content)
-            match_page = MatchDetailPage(doc=doc)
+
+            match_page = MatchDetailPage(doc=doc, url=url)
             match: Match = match_page.extract()
 
             post_event("match_extracted", match)
