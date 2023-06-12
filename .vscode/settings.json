@@ -3,4 +3,8 @@
         79
     ],
     "python.formatting.provider": "black",
+    "cSpell.words": [
+        "hattrick",
+        "httpx",
+    ]
 }

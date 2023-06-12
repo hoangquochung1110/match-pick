@@ -1,15 +1,12 @@
 from lxml import html
-from page_object import Match, Goal
-import itertools
+from page_object import Match
 from pages.match.match_detail_page import MatchDetailPage
-from decimal import Decimal
-from collections import defaultdict
-import aiohttp
 import asyncio
 from helper import calculate_execution_time
 from constants import match_ids
 import httpx
-
+from event import post_event
+from calendar_listeners import setup_calendar_event_handlers
 
 match_url = "https://www.premierleague.com/match/"
 
@@ -21,6 +18,9 @@ async def get_match(match_id):
             doc = html.fromstring(res.content)
             match_page = MatchDetailPage(doc=doc)
             match: Match = match_page.extract()
+
+            post_event("match_extracted", match)
+            
             return match
 
 async def get_matches(match_ids):
@@ -30,5 +30,8 @@ async def get_matches(match_ids):
     return matches
 
 if __name__ == "__main__":
+    # Init listener to do business logic
+    setup_calendar_event_handlers()
+
     with calculate_execution_time():
         matches = asyncio.run(get_matches(match_ids=match_ids))
