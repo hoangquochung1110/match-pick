@@ -1,5 +1,6 @@
 from page_object import Component
 import datetime as dt
+from zoneinfo import ZoneInfo
 
 class Matchbar(Component):
     """Represents `matchBar` container."""
@@ -12,7 +13,10 @@ class Matchbar(Component):
         timestamp_as_str = self.component.find_class(
             "matchDate"
         )[0].attrib["data-kickoff"]
-        return dt.datetime.fromtimestamp(int(timestamp_as_str)/1000)
+        return dt.datetime.fromtimestamp(
+            int(timestamp_as_str)/1000,
+            tz=ZoneInfo("Asia/Ho_Chi_Minh"),
+        )
 
     def get_attendance(self) -> str:
         return self.component.find_class("attendance")[0].text.split(" ")[1]
