@@ -88,5 +88,5 @@ def parse_assist_event_string(text: str) -> tuple[str, str]:
     
     For example: Bukayo Saka 28 -> return 'Bukayo Saka', 28
     """
-    match = re.match(r"([A-Za-z\s]+)(\d+)", text)
+    match = re.match(r"([A-Za-zÀ-ÿ\s]+)(\d+)", text)
     return match.group(1).strip(), match.group(2)
