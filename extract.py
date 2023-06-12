@@ -86,7 +86,9 @@ if __name__ == "__main__":
 def parse_assist_event_string(text: str) -> tuple[str, str]:
     """Parse assist string.
     
-    For example: Bukayo Saka 28 -> return 'Bukayo Saka', 28
+    For example: Bukayo Saka 28 -> return ('Bukayo Saka', 28)
+
+    Armel Bella-Kotchap 66' -> return (Armel Bella-Kotchap, 66)
     """
-    match = re.match(r"([A-Za-zÀ-ÿ\s]+)(\d+)", text)
+    match = re.match(r"([-A-Za-zÀ-ÿ\s]+)(\d+)", text)
     return match.group(1).strip(), match.group(2)
