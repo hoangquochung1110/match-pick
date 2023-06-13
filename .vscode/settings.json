@@ -2,12 +2,18 @@
     "editor.rulers": [
         79
     ],
-    "python.formatting.provider": "black",
+    "python.formatting.provider": "none",
     "cSpell.words": [
         "hattrick",
         "httpx",
         "ipdb",
         "scorebox",
         "scrapy",
-    ]
+    ],
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": true,
+        }
+    },
 }
