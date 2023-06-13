@@ -1,14 +1,11 @@
 from functools import partialmethod
 from typing import Literal
 
-from epl import Assist, Club, Goal, Match
-from match_picker.extract import (
-    GoalEvent,
-    condense_spaces,
-    parse_assist_event_string,
-    parse_goal_event_string
-)
+from match_picker.extract import (GoalEvent, condense_spaces,
+                                  parse_assist_event_string,
+                                  parse_goal_event_string)
 from match_picker.page_object import Component
+from modelers import Assist, Club, Goal, Match
 
 
 class Scorebox(Component):

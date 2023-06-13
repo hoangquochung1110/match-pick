@@ -1,7 +1,7 @@
 from lxml import html
 
-from epl import Club, Match
 from match_picker.event import post_event
+from modelers import Club, Match
 
 from .matchbar import Matchbar
 from .scorebox import Scorebox

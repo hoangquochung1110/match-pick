@@ -1,8 +1,9 @@
-from match_picker.event import subscribe
-from collections import Counter
-from epl import Goal, Match
-from match_picker.icalendar import create_calendar
 import datetime as dt
+from collections import Counter
+
+from match_picker.event import subscribe
+from match_picker.icalendar import create_calendar
+from modelers import Goal, Match
 
 
 def handle_player_with_hattrick(match):

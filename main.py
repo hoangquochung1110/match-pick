@@ -1,10 +1,10 @@
 import requests
 from lxml import html
-from epl import Match
-from pages.match.match_detail_page import MatchDetailPage
 
 from match_picker.constants import match_ids
 from match_picker.helper import calculate_execution_time
+from modelers import Match
+from pages.match.match_detail_page import MatchDetailPage
 
 
 def get_matches(match_ids):

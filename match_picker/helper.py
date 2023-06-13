@@ -1,7 +1,8 @@
-from contextlib import contextmanager
 import time
+from contextlib import contextmanager
 from decimal import Decimal
-from epl import Goal
+
+from modelers import Goal
 
 
 @contextmanager  # type: ignore
