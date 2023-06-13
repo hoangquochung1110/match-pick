@@ -1,7 +1,7 @@
 from lxml import html
 from .scorebox import Scorebox
 from .matchbar import Matchbar
-from page_object import Match, Club
+from epl import Match, Club
 
 
 class Page:

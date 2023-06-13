@@ -1,5 +1,5 @@
 from lxml import html
-from page_object import Match
+from epl import Match
 from pages.match.match_detail_page import MatchDetailPage
 import asyncio
 from helper import calculate_execution_time

@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 import time
 from decimal import Decimal
-from page_object import Goal
+from epl import Goal
 
 
 @contextmanager  # type: ignore

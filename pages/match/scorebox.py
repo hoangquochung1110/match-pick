@@ -1,7 +1,14 @@
-from typing import Literal
 from functools import partialmethod
-from extract import GoalEvent, condense_spaces, parse_assist_event_string, parse_goal_event_string
-from page_object import Assist, Club, Match, Goal, Component
+from typing import Literal
+
+from epl import Assist, Club, Goal, Match
+from extract import (
+    GoalEvent,
+    condense_spaces,
+    parse_assist_event_string,
+    parse_goal_event_string
+)
+from page_object import Component
 
 
 class Scorebox(Component):
