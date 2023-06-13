@@ -1,4 +1,4 @@
-from page_object import Component
+from match_picker.page_object import Component
 import datetime as dt
 from zoneinfo import ZoneInfo
 
