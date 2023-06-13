@@ -1,7 +1,10 @@
 from lxml import html
-from .scorebox import Scorebox
+
+from epl import Club, Match
+from match_picker.event import post_event
+
 from .matchbar import Matchbar
-from epl import Match, Club
+from .scorebox import Scorebox
 
 
 class Page:
@@ -20,8 +23,8 @@ class MatchDetailPage(Page):
     @property
     def matchbar(self):
         return Matchbar(doc=self.doc, path="matchBar")
-
-    def extract(self):
+    
+    def _extract(self):
         home_team = self.scorebox.get_team_home()
         away_team = self.scorebox.get_team_away()
         home_goals = self.scorebox.get_goals_home()
@@ -32,7 +35,7 @@ class MatchDetailPage(Page):
         home_events = home_goals + home_assists
         away_events = away_goals + away_assists
 
-        return Match(
+        match = Match(
             ext_id=self.scorebox.match_id,
             url=self.url,
             kickoff=self.matchbar.get_kickoff(),
@@ -45,3 +48,10 @@ class MatchDetailPage(Page):
             away_events=away_events,
             referee=self.matchbar.get_referee(),
         )
+
+        post_event("match_extracted", match)
+
+        return match        
+
+    def extract(self):
+        return self._extract()
