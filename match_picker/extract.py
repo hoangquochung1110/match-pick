@@ -40,14 +40,14 @@ def parse_goal_event_string(text: str) -> tuple[str, list[str]]:
     goal_events = []
 
     cleaned_text = text.replace("label.penalty.scored", "Goal")
-    player_pattern = r"^[A-Za-z\s-]+"
+    player_pattern = r"^[-A-Za-zÀ-ÿ\s]+"
     # minute_pattern = r"\b[\d\s\+]+'"
     minute_pattern = r"[\d\s+]*'\s*(?:\(pen\))?|\d+'"
 
     label_pattern = r"Goal"
     is_goal = re.search(label_pattern, cleaned_text)
     if not is_goal:
-        raise ValueError("Not goal: ",cleaned_text)
+        raise ValueError("Not goal: ", cleaned_text)
 
     player = re.match(player_pattern, cleaned_text)
 
@@ -66,21 +66,14 @@ def parse_goal_event_string(text: str) -> tuple[str, list[str]]:
 
 if __name__ == "__main__":
     input = "Bukayo Saka 43', 74' Goal"
-    input = "James Ward-Prowse 90 +3' (pen) label.penalty.scored"
-    input = "Erling Haaland 34', 37', 64' Goal"
+    print(parse_goal_event_string(input))
 
-    player_pattern = r"^[A-Za-z\s-]+"
-    # minute_pattern = r"(?:\w)\d{1,2}"
-    # minute_pattern = r"\d+(?=')|\d+(?=\+)"
-    minute_pattern = r"[\d\s\+]+'"
-    extra_minute_pattern = r"\+\d{1,2}"
+    # input = "James Ward-Prowse 90 +3' (pen) label.penalty.scored"
+    # print(parse_goal_event_string(input))
 
-    label_pattern = r"Goal|\(pen\)"
+    # input = "Erling Haaland 34', 37', 64' Goal"
+    # print(parse_goal_event_string(input))
 
-    is_goal = re.search(label_pattern, input)
-    if is_goal:
-        minutes = re.findall(minute_pattern, input)
-        player = re.match(player_pattern, input)
 
 
 def parse_assist_event_string(text: str) -> tuple[str, str]:
