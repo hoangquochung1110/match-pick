@@ -7,6 +7,8 @@ from modelers import Goal, Match
 
 
 def listen_to(event_type):
+    """Decorator to facilitate event subscription."""
+
     def decorator(handler):
         subscribe(event_type, handler)
         return handler
