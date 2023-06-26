@@ -31,8 +31,5 @@ async def get_matches(match_ids):
 
 
 if __name__ == "__main__":
-    # Init listener to do business logic
-    # setup_calendar_event_handlers()
-
     with calculate_execution_time():
         matches = asyncio.run(get_matches(match_ids=match_ids))
