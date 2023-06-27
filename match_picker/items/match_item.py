@@ -1,3 +1,5 @@
+# To organize scraped data into structural pattern.
+
 from scrapy.item import Field, Item
 
 
