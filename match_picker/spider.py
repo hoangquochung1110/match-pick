@@ -19,7 +19,9 @@ class MatchSpider(scrapy.Spider):
     def parse_match(self, response):
         # Extract data from the response here
         full_time_score = response.css(".score.fullTime")
+        halftime_score = response.xpath("//div[@class='halfTime']/node()")[2]
         match = MatchItem()
         match["fulltime_score"] = full_time_score.xpath("string()").get().strip()
+        match["halftime_score"] = halftime_score.get().strip()
         yield match
 
