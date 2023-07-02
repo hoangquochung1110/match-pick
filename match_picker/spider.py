@@ -1,3 +1,5 @@
+import datetime as dt
+
 import scrapy
 from items.match_item import MatchItem
 
@@ -23,5 +25,10 @@ class MatchSpider(scrapy.Spider):
         match = MatchItem()
         match["fulltime_score"] = full_time_score.xpath("string()").get().strip()
         match["halftime_score"] = halftime_score.get().strip()
+        match["kickoff"] = self._parse_kickoff(response)
         yield match
 
+    def _parse_kickoff(self, response):
+        dt_str = response.xpath("//div[@class='matchDate renderMatchDateContainer']/@data-kickoff").get()
+        kickoff = dt.datetime.fromtimestamp(int(dt_str)/1000)
+        return kickoff.strftime("%a %d %B %Y")
