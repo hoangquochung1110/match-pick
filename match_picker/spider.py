@@ -10,6 +10,10 @@ class MatchSpider(scrapy.Spider):
         'https://www.premierleague.com/match/74941',
         "https://www.premierleague.com/match/75001",
     ]
+    custom_settings = {
+        # specifies exported fields and order in csv
+        'FEED_EXPORT_FIELDS': ["match_id", "home", "away", "fulltime_score", "halftime_score", "kickoff", "referee"],
+    }
 
     def start_requests(self):
         """Tell Scrapy to use `parse_match` to process url."""
