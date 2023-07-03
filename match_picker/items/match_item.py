@@ -7,3 +7,7 @@ class MatchItem(Item):
     fulltime_score = Field()
     halftime_score = Field()
     kickoff = Field()
+    match_id = Field()
+    home = Field()
+    away = Field()
+    referee = Field()
