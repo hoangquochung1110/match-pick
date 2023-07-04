@@ -2,18 +2,17 @@ import datetime as dt
 
 import scrapy
 from epl_scrapy.items import MatchItem
-from epl_scrapy.match_ids.season_2023 import match_ids
-
-BASE_MATCH_URL = "https://www.premierleague.com/match/"
 
 
-class MatchSpider(scrapy.Spider):
+class BaseMatchSpider(scrapy.Spider):
+    """Matches of Arsenal in season 2022/23."""
+
     name = "epl"
-    start_urls = ["".join([BASE_MATCH_URL, match_id]) for match_id in match_ids]
     custom_settings = {
         # specifies exported fields and order in csv
         "FEED_EXPORT_FIELDS": [
             "match_id",
+            "gameweek",
             "home",
             "away",
             "fulltime_score",
@@ -37,6 +36,7 @@ class MatchSpider(scrapy.Spider):
         match = MatchItem()
 
         match["match_id"] = match_id
+        match["gameweek"] = self._parse_gameweek(response)
         match["kickoff"] = self._parse_kickoff(response)
         match["referee"] = self._parse_referee(response)
         match["home"] = self._parse_home(response)
@@ -50,6 +50,11 @@ class MatchSpider(scrapy.Spider):
         start_time = self.crawler.stats.get_value("start_time")
         finish_time = self.crawler.stats.get_value("finish_time")
         print("Total run time: ", finish_time - start_time)
+
+    def _parse_gameweek(self, response):
+        return response.xpath(
+            "//div[@class='matchCentre']/header/div[@class='dropDown']/div/div[@class='short']/text()"
+        ).get()
 
     def _parse_fulltime_score(self, response):
         return response.xpath("string(//div[@class='score fullTime'])").get()

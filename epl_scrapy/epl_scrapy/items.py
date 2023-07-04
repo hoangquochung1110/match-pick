@@ -10,6 +10,7 @@ from scrapy.item import Field, Item
 
 class MatchItem(Item):
     match_id = Field()
+    gameweek = Field()
     home = Field()
     away = Field()
     fulltime_score = Field()
