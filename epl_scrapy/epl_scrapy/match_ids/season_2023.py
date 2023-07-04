@@ -1,5 +1,6 @@
 # Arsenal match ids in EPL 2022/2023
 match_ids = [
+    "75281",
     "75277",
     "75261",
     "75256",
