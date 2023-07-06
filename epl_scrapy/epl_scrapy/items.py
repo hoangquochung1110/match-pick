@@ -17,3 +17,9 @@ class MatchItem(Item):
     halftime_score = Field()
     kickoff = Field()
     referee = Field()
+
+
+class GoalItem(Item):
+    match_id = Field()
+    player = Field()
+    minute = Field()
