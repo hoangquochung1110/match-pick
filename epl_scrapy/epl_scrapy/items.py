@@ -23,3 +23,5 @@ class GoalItem(Item):
     match_id = Field()
     player = Field()
     minute = Field()
+    label = Field()
+    side = Field()

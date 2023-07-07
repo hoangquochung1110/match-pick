@@ -1,11 +1,11 @@
 import scrapy
 from epl_scrapy.items import GoalItem
-from epl_scrapy.match_ids.season_2023 import match_ids
+from epl_scrapy.match_ids.season_2022 import match_ids
 
 BASE_MATCH_URL = "https://www.premierleague.com/match/"
 
-class Arsenal2023GoalSpider(scrapy.Spider):
-    """Goals of Arsenal in season 2022/23."""
+class Arsenal2022GoalSpider(scrapy.Spider):
+    """Goals of Arsenal in season 2021/22."""
 
     name = "epl_goals"
     start_urls = ["".join([BASE_MATCH_URL, match_id]) for match_id in match_ids]
@@ -30,15 +30,11 @@ class Arsenal2023GoalSpider(scrapy.Spider):
             label = response.xpath(
                 f"({base_xpath_query})[{idx}]/div/div/span/text()"
             ).get()
-            side = response.xpath(
-                f"({base_xpath_query})[{idx}]/parent::node()/@class"
-            ).get()
             for minute in minutes:
                 goal = GoalItem(
                     match_id=match_id,
                     player=player,
                     minute=minute,
                     label=label,
-                    side=side,
                 )
                 yield goal
