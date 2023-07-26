@@ -9,6 +9,7 @@
         "ipdb",
         "scorebox",
         "scrapy",
+        "gameweek",
     ],
     "[python]": {
         "editor.formatOnSave": true,
