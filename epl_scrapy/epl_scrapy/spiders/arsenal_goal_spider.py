@@ -1,5 +1,3 @@
-from importlib import import_module
-
 import scrapy
 from epl_scrapy.items import GoalItem
 from epl_scrapy.utils import import_symbol
