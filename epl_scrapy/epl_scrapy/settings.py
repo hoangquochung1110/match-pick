@@ -54,6 +54,20 @@ ROBOTSTXT_OBEY = True
 #    "epl_scrapy.middlewares.EplScrapyDownloaderMiddleware": 543,
 #}
 
+DOWNLOAD_HANDLERS = {
+    "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+    "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+}
+
+# To enable asyncio support
+TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+# Options when launching browsers
+# https://playwright.dev/python/docs/api/class-browsertype#browser-type-launch
+PLAYWRIGHT_LAUNCH_OPTIONS = {
+    "headless": True,
+    "timeout": 10 * 1000,  # 20 seconds
+}
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
