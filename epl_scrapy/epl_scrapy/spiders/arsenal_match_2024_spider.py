@@ -23,7 +23,6 @@ class ArsenalMatch2024Spider(scrapy.Spider):
                             playwright_include_page=True,
                             playwright_page_methods=[
                                         PageMethod("wait_for_selector", "div.mcBlogStream"),
-                                        PageMethod("wait_for_selector", "div.fixtures-abridged-header__title"),
                                         PageMethod("evaluate", "window.scrollBy(0, 500)"),
                             ]
                 )   

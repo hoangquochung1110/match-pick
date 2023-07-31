@@ -35,4 +35,5 @@ class ArsenalMatchListSpider(scrapy.Spider):
             latest_match = match
         if latest_match:
             yield {"match_id": match.attrib.get("data-comp-match-item")}
+        # Return -1 if the season hasn't started yet.
         yield {"match_id": -1}
