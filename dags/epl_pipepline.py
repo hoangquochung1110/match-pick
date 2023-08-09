@@ -2,13 +2,12 @@ import datetime
 import logging
 
 import pendulum
-from airflow import DAG
 from airflow.decorators import dag, task
 from airflow.operators.python import PythonOperator
 
 
 def get_latest_finished_match():
-    from epl_scrapy.epl_scrapy.spiders.arsenal_match_list_spider import \
+    from epl_scrapy.spiders.arsenal_match_list_spider import \
         ArsenalMatchListSpider
 
 @dag(
