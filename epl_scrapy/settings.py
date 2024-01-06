@@ -50,9 +50,11 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    "epl_scrapy.middlewares.EplScrapyDownloaderMiddleware": 543,
-#}
+#     'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+#     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+# }
 
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
@@ -65,7 +67,7 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 # Options when launching browsers
 # https://playwright.dev/python/docs/api/class-browsertype#browser-type-launch
 PLAYWRIGHT_LAUNCH_OPTIONS = {
-    "headless": True,
+    "headless": False,
     "timeout": 10 * 1000,  # 20 seconds
 }
 # Enable or disable extensions
@@ -105,3 +107,10 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+# scrapy-proxies settings
+ROTATING_PROXY_LIST = [
+    '123.25.15.209:9812',
+    '113.161.59.136:8080',
+    # ...
+]

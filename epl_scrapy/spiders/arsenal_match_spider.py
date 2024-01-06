@@ -1,6 +1,7 @@
 import datetime as dt
 
 import scrapy
+
 from epl_scrapy.items import MatchItem
 from epl_scrapy.utils import import_symbol
 
@@ -76,7 +77,8 @@ class BaseMatchSpider(scrapy.Spider):
     def _parse_kickoff(self, response):
         dt_str = response.xpath(
             "//strong[@class='renderKOContainer']/@data-kickoff"
-        ).get()
+        ).get() or response.xpath("//span[@class='renderKOContainer']/@data-kickoff").get()
+
         kickoff = dt.datetime.fromtimestamp(int(dt_str) / 1000)
         return kickoff.strftime("%a %d %B %Y")
 

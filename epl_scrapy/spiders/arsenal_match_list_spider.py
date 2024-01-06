@@ -5,7 +5,7 @@ from scrapy_playwright.page import PageMethod
 class ArsenalMatchListSpider(scrapy.Spider):
 
     name = "arsenal match list"
-    start_urls = ["https://www.premierleague.com/fixtures?co=1&cl=1"]
+    start_urls = ["https://www.premierleague.com/results?co=1&se=578&cl=1"]
 
     def start_requests(self):
         yield scrapy.Request(
