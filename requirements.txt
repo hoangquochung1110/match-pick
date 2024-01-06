@@ -9,3 +9,5 @@ ics
 
 scrapy
 scrapy-playwright
+pendulum
+apache-airflow-providers-postgres
