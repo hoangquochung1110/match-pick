@@ -9,3 +9,8 @@ for example, to scrape match (score, kickoff, referee, etc.) in season 2023 and 
 ```shell
 scrapy crawl arsenal_match_spider_2024 -a season=2024 -O output.csv
 ```
+
+or 
+```shell
+scrapy crawl arsenal_match_list_2024 -O output.csv
+```
