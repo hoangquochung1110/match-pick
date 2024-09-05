@@ -8,10 +8,10 @@ from epl_scrapy.utils import import_symbol
 BASE_MATCH_URL = "https://www.premierleague.com/match/"
 
 
-class BaseMatchSpider(scrapy.Spider):
+class EPLMatchSpider2023(scrapy.Spider):
     """Matches of Arsenal in season 2022/23."""
 
-    name = "epl"
+    name = "arsenal_match_spider_2023"
     custom_settings = {
         # specifies exported fields and order in csv
         "FEED_EXPORT_FIELDS": [
