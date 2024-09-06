@@ -43,12 +43,12 @@ class ArsenalMatchListSpider(scrapy.Spider):
     
     def parse_latest_match(self, response):
         """Get match_id of latest finished match."""
-        matches = response.xpath("//li[@class='match-fixture']")
-        for index, match in enumerate(matches):
+        for match in response.xpath("//li[@class='match-fixture']"):
             match_item = MatchItem()
             match_item["match_id"] = match.attrib.get("data-comp-match-item")
-            score_text = match.xpath("(//span[@class='match-fixture__score '])")[index].get()
-            score_text = re.sub(r'<.*?>', '', score_text)
-            match_item["fulltime_score"] = score_text
+            first_span = match.xpath(".//span[@class='match-fixture__teams ']")[0]
+            score_span = first_span.xpath(".//span[@class='match-fixture__score ']").get()
+            score = re.sub(r'<[^>]+>', '', score_span)  # remove HTML tags
+            extracted_score = score.strip()  # trim whitespace
+            match_item["fulltime_score"] = extracted_score
             yield match_item
-
