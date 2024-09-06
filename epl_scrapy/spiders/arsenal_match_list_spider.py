@@ -34,20 +34,28 @@ class ArsenalMatchListSpider(scrapy.Spider):
                 playwright_page_methods=[
                     PageMethod("evaluate", "document.querySelector('#onetrust-accept-btn-handler').click()"),
                     PageMethod("evaluate", "document.querySelector('#advertClose').click()"),
-                    PageMethod("evaluate", "window.scrollBy(0, 500)"),
+                    PageMethod("evaluate", "window.scrollBy(0, window.innerHeight * 2)"),
                     # This where we can implement scrolling if we want
                     PageMethod('wait_for_selector', 'span.match-fixture__container'),
+                    PageMethod("wait_for_timeout", 200),
                 ]
-            )        
+            )
         )
-    
+
     def parse_latest_match(self, response):
         """Get match_id of latest finished match."""
         for match in response.xpath("//li[@class='match-fixture']"):
             match_item = MatchItem()
+
             match_item["match_id"] = match.attrib.get("data-comp-match-item")
-            first_span = match.xpath(".//span[@class='match-fixture__teams ']")[0]
-            score_span = first_span.xpath(".//span[@class='match-fixture__score ']").get()
+
+            teams_span = match.xpath(".//span[@class='match-fixture__teams ']")[0]
+
+            teams = teams_span.xpath(".//span[@class='match-fixture__team']")
+            match_item["home"] = teams[0].xpath(".//span[@class='match-fixture__abbr']/text()").get()
+            match_item["away"] = teams[1].xpath(".//span[@class='match-fixture__abbr']/text()").get()
+
+            score_span = teams_span.xpath(".//span[@class='match-fixture__score ']").get()
             score = re.sub(r'<[^>]+>', '', score_span)  # remove HTML tags
             extracted_score = score.strip()  # trim whitespace
             match_item["fulltime_score"] = extracted_score
